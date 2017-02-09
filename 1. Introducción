@@ -1,0 +1,68 @@
+
+######################################################   08/02/2017   ###################################################
+
+
+x<- 1:25  # secuencia del 1 a 25 
+x  # muestra los num del 1 al 25 abajo
+mean(x)  # muestra la media
+ls() # muestra listado de lo que has guardado
+y <- 2:29
+ls()
+
+
+###########   VECTORES    ###############
+x2 <-c(2,4,6) 
+x3 <- c(.1,2,.3,4,.5,6,.7,8,.9) # guarda los números en x3
+y <- seq(8,80,4)# secuencia del 8 a 80 de 4 e 4
+y
+g <- seq (3,500,6)
+g
+
+############### NOTAS ##############
+
+length(g) # para ver longitud del vector
+
+media <- sum(x)/length(x)
+
+rm(x) # borra las variables
+ls()
+
+rm(list=ls()) # borra tooooooooodo
+ls()
+
+
+nse <- c("alto", "medio", "bajo")
+x<- rnorm(100)
+x
+
+##############   GRÁFICAS    ##############
+plot (x)
+
+b <- c (1:100)
+b
+
+plot(b,x)
+
+y = x+rnorm(100, mean=50, sd=.05) #sd (desviación estandar)
+cor(x,y)
+
+
+
+mean(y)
+var(y)
+sd(y)
+sqrt(var(y))
+
+
+###### OPERADORES RELACIONALES   #####3
+#<,>,<=, >=,==, !=
+  
+ 8==7.99999999999999999
+x<17
+x==17
+x<=19
+
+
+
+##### OPERACIONES LÓGICAS  & (y),  | (o)####
+a(a<b & a>3)
