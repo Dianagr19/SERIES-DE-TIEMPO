@@ -6,3 +6,21 @@ rates <- read_excel ("C://Users//SALA-F13//Downloads//rates.xlsx") # liga + nomb
 rates.ts <- ts(rates, frequency=1, star=(1)) #time series 
 
 plot(rates.ts, ylab="Rates", xlab="Perido", main="Paridad peso/dolar", col=2)
+
+
+
+
+
+###################    PETROLEO  ################
+install.packages("readxl")
+library(readxl)
+
+
+
+
+
+petroleo <- read_excel ("C://Users//SALA-F14//Documents//series//petroleo.xlsx")
+
+petroleo.ts <- ts(petroleo, frequency=1, star=(1))
+
+plot(petroleo.ts, ylab="petroleo", xlab="Perido", main="Petroleo", col=2)
