@@ -1,0 +1,72 @@
+install.packages("foreign")
+library (foreign)
+install.packages("readxl")
+library (readxl)
+
+petroleo <- read_excel("C://Users//SALA-F14//Downloads//petroleo.xlsx")
+
+petroleo.ts <- ts(petroleo)
+
+install.packages("tseries")  #para encontrar estadisticos estacionales
+library (tseries)
+
+?acf
+
+acf(petroleo, lag=20, plot=FALSE)
+
+Autocorrelations of series ‘petroleo’, by lag
+
+                       # 0      1      2      3      4      5      6      7      8      9     10     11     12     13 
+                      # 1.000  0.942  0.876  0.822  0.763  0.711  0.667  0.608  0.538  0.466  0.394  0.320  0.251  0.199 
+                      #14     15     16     17     18     19     20 
+                      #0.156  0.126  0.098  0.061  0.013 -0.019 -0.052 
+
+acf (petroleo.ts, plot=TRUE)
+
+
+
+
+#########################         TRANSFORMACIÓN LOGARÍTMICA        ###########################
+
+
+
+               #####################      ESTADISTICOS      ###########################
+
+#kWIATKOWSKI-PHILLIPS-SCHMIDT-SHIM  (KPSS)
+#estadistico basado en la descomposicion de la serie
+#yt= Ty+Et+It
+
+petroleo.log <- log(petroleo.ts)
+kpss.test(petroleo.log)   #p-vallue menores a 0.05 no son estacionarias
+
+
+                                #KPSS Test for Level Stationarity
+                    
+                    # data:  petroleo.log
+                    # KPSS Level = 1.5161, Truncation lag parameter = 2, p-value = 0.01
+
+
+
+
+
+              ################  t de Dickey - Fuller aumentada   ####################
+
+adf.test(petroleo.log,alternative = "stationary")        # p- values menor a .05 datos estacionarios
+ 
+                                   # Augmented Dickey-Fuller Test
+                            
+                      #data:  petroleo.log
+                      #Dickey-Fuller = -2.2123, Lag order = 5, p-value = 0.4878
+                      #alternative hypothesis: stationary
+
+
+
+                       ###############     Box test   ###########
+
+Box.test(petroleo.ts)
+
+
+                                      # Box-Pierce test
+                            
+                           # data:  petroleo.ts
+                           # X-squared = 141.02, df = 1, p-value < 2.2e-16
