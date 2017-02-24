@@ -1,0 +1,51 @@
+install.packages("foreign")
+library (foreign)
+base<- read.dta(("C://Users//SALA-F14//Downloads//base.dta"))
+
+install.packages("readxl")
+library (readxl)
+base<- read_excel("C://Users//SALA-F14//Downloads//base.xlsx")
+
+?lm
+base  # se ve abajo
+View(base) #abre pestaña aparte
+
+
+############################    REGRESIÓN LINEAL     #######################################
+
+####GUARDAR EL MODELO CON UNA NUEVA VARIABLE
+
+base.lm <- lm (peso ~ talla, base)  #el peso depende de la talla
+
+
+
+##### eXTRAEMOS LOS COEFICIENTES
+betas=coefficients(base.lm);betas
+
+                      
+                      #(Intercept)       talla 
+                      #-225.730521    1.894393 
+
+####  COEFICIENTE DE DETERMIACION
+summary(base.lm)$r.squared
+
+
+                #> summary(base.lm)$r.squared
+                #[1] 0.7868967                                  #APROXIMADAMENTE EL 78.68% 
+                                                                  #DE LA VARIACION EN "X" ESTA EXPLICADA POR "Y", 
+                                                                  #el peso depende de la talla
+
+### PRUEBA F
+summary(base.lm)                    #PUEDE ESTABLECERCE SI EXISTE ALGUNA ASOCIACION SIGNIFICATIVA
+                                     #ENTRE "X Y Y" BAJO LA HIPOTESIS NULA DE QUE BETA =0, 
+                                      #SI ES MENOR A 0.05 ES HIPOTESIS NULA
+
+
+### VALORES PREDICHOS IC95%
+predict(base.lm, base, interval = "predict", level=.95)
+
+###GRAFICO DE RESIDUOS
+loquesobra<- residuals(base.lm)
+plot(jitter(loquesobra)~jitter(talla), ylab = "residuos", xlab="Talla", data=base)
+abline(0,0,col="read")
+summary(loquesobra)
