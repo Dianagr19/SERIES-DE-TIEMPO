@@ -55,3 +55,15 @@ plot(as.ts(consumop.ntend), col="red")  ## queda solo los componentes estacional
 par(mfrow=c(1,2))
 plot((consumop.ts), col="blue")
 plot((consumop.ntend), col="green")
+
+
+
+## #############################  AJUSTE ESTACIONAL
+install.packages("fpp")
+library (fpp)
+plot(consumop.ts)
+plot(consumop.stl)
+
+monthplot(consumop.stl$time.series[,"seasonal"], main="componente estacional por meses", ylab="componente estacional")
+
+plot(consumop.ts,col="black", main="ajuste estacional", xlab="periodo", ylab="Indice estacional")
