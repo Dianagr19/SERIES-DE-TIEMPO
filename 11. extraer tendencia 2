@@ -1,0 +1,57 @@
+######## ejemplo 8 de marzo
+library(readxl)
+consumop<-read_excel("C://Users//SALA-F14//Downloads//ejemplo3.xlsx")
+install.packages("forecast")  ###paqueteria para proyecciones: funcion (stl)
+library(forecast)
+
+consumop.ts<- ts (consumop, start=c(1910,1), frequency=12)# v a tomar como serie de tiempo consumop desde enero 1910
+plot(consumop.ts, xlab="periodo de tiempo", ylab="producto medio de productos", main=" Consumo medio de productos", col="purple")
+
+consumop.descom<-decompose(consumop.ts, "multiplicative") #serie economica
+consumop.descom<-decompose(consumop.ts, "additive") ##
+
+cycle(consumop.ts)
+
+####detectando patron estacional
+windows()
+boxplot(consumop.ts~cycle(consumop.ts))  ######### que significan los tamaños y bigotes
+
+plot(as.ts(consumop.descom$seasonal))
+plot(as.ts(consumop.descom$trend))
+plot(as.ts(consumop.descom$random))
+plot(consumop.descom) ## saca las anteriores en horizontal
+
+x11()
+par(mfrow=c(1,3))
+plot(consumop.descom$seasonal)
+plot(consumop.descom$trend)
+plot(consumop.descom$random)
+
+
+#extraer tendencia (Tt) con el metodo loess, funcion (stl)
+consumop.ts<- ts(consumop[1:56,1], frequency=12, start = c(1910,1), end=c(1915,8))# 56 valores en una columna, inicia en enero de 1910 y termina en agosto de 1914 y se ve con cycle
+cycle(consumop.ts)
+class(consumop.ts) ### para verificar que es una serie de tiempo
+View(consumop.ts)
+
+
+consumop.stl<- stl(consumop.ts, s.window="periodic",robust = T)
+names(consumop.stl)
+consumop.stl
+
+
+consumop.tend<- consumop.stl$time.series[,2]
+consumop.tend ## transpone
+
+plot(consumop.ts, col="blue", main="consumo de productos", ylab="Tendencia", xlab="periodo")
+lines(consumop.stl$time.series[,2], col="red", ylab="tendencia")
+
+
+#Eliminar tendencia (Tt)de Yt
+consumop.ntend=consumop.ts/consumop.descom$trend #ntend= no tendencia (inventado)  ## es entre porq arriba es multiplicativa
+#para observa los conponentes estacionales y a su vez los componentes
+plot(as.ts(consumop.ntend), col="red")  ## queda solo los componentes estacionales
+
+par(mfrow=c(1,2))
+plot((consumop.ts), col="blue")
+plot((consumop.ntend), col="green")
