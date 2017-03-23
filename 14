@@ -1,0 +1,26 @@
+install.packages("forecast")
+library (forecast)
+library(readxl)
+base<- read_excel("C://Users//SALA-F14//Downloads//base.xlsx")
+plot(jitter(consumo)~jitter(ingresos), xlab="Ingresos", ylab="consumo", data=base)
+estimado<- lm(consumo~ ingresos, data=base)
+abline (estimado, col="red")
+summary (estimado)
+
+#Residuos
+residuos<- residuals(estimado)
+plot(jitter(residuos)~jitter(ingresos), ylab="Residuos", xlab="Ingresos", data=base)
+abline(0,0, col="red")
+   #la diferencia entre lo estimado y lo observado debe ser igual a cero
+
+# Pronosticos con regresión
+fitted(estimado)[1]
+
+pronosticos<- forecast(estimado, newdata = data.frame(ingresos=2000))
+plot(pronosticos, xlab="Ingresos", ylab="Consumo")
+
+par(mfrow=c(1,3))
+estimado.l<- lm(log(consumo)~log(ingresos), data=base)
+
+
+View(base)
