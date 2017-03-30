@@ -1,0 +1,147 @@
+install.packages("forecast")
+library (forecast)
+library (readxl)
+datos<- read_excel("C://Users//SALA-F14//Downloads//base.xlsx")
+consuingreso.ts<- ts(datos)
+View(consuingreso.ts)# para veridicar que la lee como serie de tiempo, si esto es asi desplegara los datos
+plot(consuingreso.ts)
+regresion<-tslm(consumo~ingresos, data=consuingreso.ts) #funcion para hacer regresion con series de tiempo  -> tslm
+# consumo =y e ingresos=x
+summary((regresion))
+> install.packages("forecast")
+Installing package into ‘C:/Users/SALA-F14/Documents/R/win-library/3.2’
+(as ‘lib’ is unspecified)
+trying URL 'https://cran.rstudio.com/bin/windows/contrib/3.2/forecast_8.0.zip'
+Content type 'application/zip' length 1919916 bytes (1.8 MB)
+downloaded 1.8 MB
+
+package ‘forecast’ successfully unpacked and MD5 sums checked
+
+The downloaded binary packages are in
+C:\Users\SALA-F14\AppData\Local\Temp\Rtmp4a90QI\downloaded_packages
+> library (forecast)
+Warning message:
+  package ‘forecast’ was built under R version 3.2.5 
+> library (readxl)
+> datos<- read_excel("C://Users//SALA-F14//Downloads//base.xlsx")
+> consuingreso.ts<- ts(datos)
+> view(consuingreso.ts)
+Error: could not find function "view"
+> View(consuingreso.ts)
+> View(datos)
+> plot(consuingreso.ts)
+> regresion<-tslm(consumo~ingresos, data=consuingreso.ts) #funcion para hacer regresion con series de tiempo
+> summary((regresion))
+
+                # Call:
+                #   tslm(formula = consumo ~ ingresos, data = consuingreso.ts)
+                
+                # Residuals:
+                #   Min       1Q   Median       3Q      Max 
+                # -1096.29  -319.76   -47.09   308.62  1302.88 
+                
+              #   Coefficients:
+              #     Estimate Std. Error t value Pr(>|t|)    
+              #   (Intercept) 648.79377   66.51789   9.754  < 2e-16 ***
+              #     ingresos      0.24470    0.05579   4.386 2.07e-05 ***
+              #     ---
+              #   Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+                
+              #   Residual standard error: 483.5 on 162 degrees of freedom
+              #   Multiple R-squared:  0.1061,	Adjusted R-squared:  0.1006 
+              #   F-statistic: 19.24 on 1 and 162 DF,  p-value: 2.071e-05
+pronosticos.1p<-  forecast(regresion, newdata = data.frame(ingresos=c(-1,1)))
+summary(pronosticos.1p)
+
+> install.packages("forecast")
+Installing package into ‘C:/Users/SALA-F14/Documents/R/win-library/3.2’
+(as ‘lib’ is unspecified)
+trying URL 'https://cran.rstudio.com/bin/windows/contrib/3.2/forecast_8.0.zip'
+Content type 'application/zip' length 1919916 bytes (1.8 MB)
+downloaded 1.8 MB
+
+package ‘forecast’ successfully unpacked and MD5 sums checked
+
+The downloaded binary packages are in
+C:\Users\SALA-F14\AppData\Local\Temp\Rtmp4a90QI\downloaded_packages
+> library (forecast)
+Warning message:
+  package ‘forecast’ was built under R version 3.2.5 
+> library (readxl)
+> datos<- read_excel("C://Users//SALA-F14//Downloads//base.xlsx")
+> consuingreso.ts<- ts(datos)
+> view(consuingreso.ts)
+Error: could not find function "view"
+> View(consuingreso.ts)
+> View(datos)
+> plot(consuingreso.ts)
+> regresion<-tslm(consumo~ingresos, data=consuingreso.ts) #funcion para hacer regresion con series de tiempo
+> summary((regresion))
+          
+       #   Call:
+      #    tslm(formula = consumo ~ ingresos, data = consuingreso.ts)
+          
+       #   Residuals:
+      #      Min       1Q   Median       3Q      Max 
+      #    -1096.29  -319.76   -47.09   308.62  1302.88 
+      #    
+      #    Coefficients:
+      #      Estimate Std. Error t value Pr(>|t|)    
+      #    (Intercept) 648.79377   66.51789   9.754  < 2e-16 ***
+      #      ingresos      0.24470    0.05579   4.386 2.07e-05 ***
+      #      ---
+      #      Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+          
+      #    Residual standard error: 483.5 on 162 degrees of freedom
+      #    Multiple R-squared:  0.1061,	Adjusted R-squared:  0.1006 
+      #    F-statistic: 19.24 on 1 and 162 DF,  p-value: 2.071e-05
+
+> pronosticos.1p<-  forecast(regresion, newdata = data.frame(ingresos=c-1,1))
+Error in c - 1 : non-numeric argument to binary operator
+> pronosticos.1p<-  forecast(regresion, newdata = data.frame(ingresos=c(-1,1)))
+> summary(pronosticos.1p)
+
+          #Forecast method: Linear regression model
+          
+          #Model Information:
+            
+           # Call:
+          #  tslm(formula = consumo ~ ingresos, data = consuingreso.ts)
+          
+        #  Coefficients:
+         #   (Intercept)     ingresos  
+        #  648.7938       0.2447  
+          
+          
+         # Error measures:
+          #  ME     RMSE      MAE       MPE     MAPE      MASE       ACF1
+        #  Training set 1.421085e-14 480.5668 379.4764 -121.7192 146.8875 0.7404698 0.08468938
+          
+         # Forecasts:
+          #  Point Forecast    Lo 80    Hi 80     Lo 95    Hi 95
+        #  165       648.5491 20.48245 1276.616 -315.2789 1612.377
+        #  166       649.0385 20.98797 1277.089 -314.7648 1612.842
+plot (pronosticos.1p)
+
+
+
+
+
+########################################################################################
+
+#### PRONOSTICOS LINEALES: se hacen cuando se encuentra tendencia, y no hay estacionalidad en la serie  
+
+library(readxl)
+datos<- read_excel("C://Users//SALA-F14//Downloads//toneladas.xlsx")
+toneladas.ts<- ts(datos)
+plot(toneladas.ts)
+View(toneladas.ts)
+pronosticos.lineales<- tslm(toneladas.ts ~ trend) #y=toneladas.ts , x=trend (trend=tendencia) esto en caso de no tener otra variable
+pronosticos.linhorizonte<- forecast(pronosticos.lineales, h=15, level=c(80,95)) # 80 y 95 son intervalos de confianza
+#que si no los ponemos, R lo pone de automatico por lo que lo podemos eliminar.
+# h=15 es el horizonte, osea el numero de observaciones posteriores al ultimo
+plot(pronosticos.lineales)
+plot(pronosticos.linhorizonte)
+lines(fitted(pronosticos.linhorizonte), col="blue")
+   #linea azul son los valores ajustados, la parte posterior son el horizonte, lo mas obscuro es el 95% y lo mas clarito es el 80%
+summary(pronosticos.linhorizonte)
