@@ -1,0 +1,31 @@
+install.packages("forecast")
+library (forecast)
+library(readxl)
+multiple<- read_excel("C://Users//SALA-F14//Downloads//multiple.xlsx")
+windows()
+pairs(multiple[,(1:5)]) #grafica los datos en matriz
+View(multiple)
+head(multiple)#para ver datos abajo
+tail(multiple)
+multiple.log<-data.frame(indice=multiple$indice,log_ahorro=log(multiple$ahorro+1),log_ingreso=log(multiple$ingreso+1), log_bienes=log(multiple$bienes+1),log_servicios=log(multiple$servicios+1))
+pairs(multiple.log[,1:5])
+estimado<-lm(indice~log_ahorro+log_ingreso+log_bienes+log_servicios,data=multiple.log)
+summary(estimado)
+estimado<-step(lm(indice~log_ahorro+log_ingreso+log_bienes+log_servicios,data=multiple.log))
+summary(estimado)
+# modelo saturado es el que acumula las variables
+
+
+###
+plot(fitted(estimado),multiple.log$indice,ylab="Indice", xlab="Indice predicho")
+CV(estimado)
+### RTresiduos ~ Predictores
+estimado<-lm(indice~log_ahorro+log_ingreso+log_bienes+log_servicios, data=multiple.log)
+par(mfrow=c(2,2))
+plot(multiple.log$log_ahorro,residuals(estimado), xlab="log(ahorros)")
+plot(multiple.log$log_ingreso,residuals(estimado), xlab="log(ingreso)")
+plot(multiple.log$log_bienes,residuals(estimado), xlab="log(bienes)")
+plot(multiple.log$log_servicios,residuals(estimado), xlab="log(servicios)")
+
+#residuos~valores predichos
+plot(fitted(estimado),residuals(estimado), xlab="Indice predicho",ylab="Residuos")
